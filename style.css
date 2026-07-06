@@ -26,30 +26,86 @@ h1 {
 
 .subtitle {
   color: #666;
-  margin-bottom: 24px;
+  margin-bottom: 8px;
+}
+.subtitle-accent {
+  color: #ef4444;       
+  font-weight: bold;   
+  margin-bottom: 8px; 
+}
+.subtitle-last {
+  color: #4b5563;       
+  font-size: 20px;
+  margin-bottom: 24px;  
+}
+.search-bar-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px; /* 검색창과 지도 사이의 간격 */
+  gap: 8px;
+}
+#searchInput {
+  width: 250px;
+  padding: 10px 14px;
+  border: 2px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+}
+#searchBtn {
+  padding: 10px 16px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+#searchBtn:hover {
+  background-color: #2563eb;
 }
 
-/* 🗺️ 지도 컨테이너: 손그림 이미지를 배경으로 지정 */
+/* 🕶️ 검색 시 배경을 어둡게 만드는 반투명 막 */
+.search-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* 60% 투명도의 검은색 */
+  border-radius: 12px;
+  z-index: 80; /* 회의실(5)보다는 높고, 강조될 좌석(90)보다는 낮게 설정 */
+  cursor: pointer;
+}
+
+/* 🌟 검색에 성공해 강조된 좌석의 스타일 */
+.seat.highlight {
+  z-index: 90 !important; /* 👈 어두운 막을 뚫고 맨 위로 올라오도록 강제 선언 */
+  transform: scale(1.3);   /* 👈 기존 40x20px 크기보다 살짝 더 키워서 한눈에 띄게 만듦 */
+  box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.2), 0 10px 25px rgba(0,0,0,0.5); /* 주변에 부드러운 하얀 광채 효과 추가 */
+  border-color: #f59e0b !important; /* 테두리를 황금색으로 강조 */
+}
+/* 🗺️ 지도 컨테이너 */
 .map-container {
   position: relative;
-  width: 1000px;  /* 이미지 가로 해상도에 맞게 적절히 조절하세요 */
-  height: 600px; /* 이미지 세로 해상도에 맞게 적절히 조절하세요 */
-  background-image: url('office_map.jpg'); /* 👈 준비하신 파일명으로 변경 */
-  background-size: 100% 100%;
+  width: 700px;  
+  height: 904px; 
+  background-image: url('office_map.jpg'); 
+  background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  margin: 0 auto;
 }
 
 /* 🪑 좌석 버튼 공통 스타일 */
 .seat {
   position: absolute;
-  width: 70px;   /* 좌석 버튼 가로 크기 */
-  height: 45px;  /* 좌석 버튼 세로 크기 */
+  width: 40px;   
+  height: 20px;  
   background-color: rgba(255, 255, 255, 0.9);
   border: 2px solid #cbd5e1;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: 11px; /* 글자가 박스 밖으로 깨지지 않게 살짝 줄임 */
   font-weight: bold;
   color: #475569;
   cursor: pointer;
@@ -59,11 +115,12 @@ h1 {
   justify-content: center;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  z-index: 10; /* 👈 회의실 텍스트나 배경 위에 무조건 오도록 우선순위 지정 */
 }
 
 /* 개별 좌석 상태별 스타일 */
 .seat.occupied {
-  background-color: #3b82f6; /* 예약된 좌석은 파란색 */
+  background-color: #3b82f6; 
   color: white;
   border-color: #2563eb;
 }
@@ -73,12 +130,118 @@ h1 {
   box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
-/* 📍 개별 좌석 위치 (예시 좌표)
-   손그림 위의 책상 위치에 맞게 top과 left 퍼센트 값을 조절하시면 됩니다.
-   여기서는 우선 가상으로 5개만 위치를 잡아두었습니다. */
-.seat[data-id="1"] { top: 15%; left: 10%; }
-.seat[data-id="2"] { top: 15%; left: 22%; }
-.seat[data-id="3"] { top: 15%; left: 34%; }
-.seat[data-id="4"] { top: 45%; left: 10%; }
-.seat[data-id="5"] { top: 45%; left: 22%; }
-/* ... 나머지 6번부터 20번까지도 이런 식으로 아래에 추가해주시면 됩니다 */
+/* 🔕 좌석 안의 번호 숫자 숨기기 (올바른 주석 처리) */
+.seat-num {
+  display: none;
+}
+
+/* 📍 1번부터 83번 좌석 위치 데이터 */
+.seat[data-id="1"] { top: 42%; left: 4%; }
+.seat[data-id="2"] { top: 47%; left: 4%; }
+.seat[data-id="3"] { top: 52%; left: 4%; }
+.seat[data-id="4"] { top: 57%; left: 4%; }
+.seat[data-id="5"] { top: 61%; left: 4%; }
+.seat[data-id="6"] { top: 66%; left: 4%; }
+.seat[data-id="7"] { top: 71%; left: 4%; }
+.seat[data-id="8"] { top: 76%; left: 4%; }
+.seat[data-id="9"] { top: 81%; left: 4%; }
+.seat[data-id="10"] { top: 86%; left: 4%; }
+.seat[data-id="11"] { top: 92%; left: 4%; }
+.seat[data-id="12"] { top: 47%; left: 14%; }
+.seat[data-id="13"] { top: 47%; left: 22%; }
+.seat[data-id="14"] { top: 51%; left: 14%; }
+.seat[data-id="15"] { top: 51%; left: 22%; }
+.seat[data-id="16"] { top: 61%; left: 13%; }
+.seat[data-id="17"] { top: 65%; left: 16%; }
+.seat[data-id="18"] { top: 62%; left: 22%; }
+.seat[data-id="19"] { top: 58%; left: 18%; }
+.seat[data-id="20"] { top: 70%; left: 12%; }
+.seat[data-id="21"] { top: 70%; left: 19%; }
+.seat[data-id="22"] { top: 70%; left: 26%; }
+.seat[data-id="23"] { top: 77%; left: 12%; }
+.seat[data-id="24"] { top: 77%; left: 19%; }
+.seat[data-id="25"] { top: 77%; left: 26%; }
+.seat[data-id="26"] { top: 82%; left: 12%; }
+.seat[data-id="27"] { top: 82%; left: 19%; }
+.seat[data-id="28"] { top: 82%; left: 26%; }
+.seat[data-id="29"] { top: 88%; left: 12%; }
+.seat[data-id="30"] { top: 88%; left: 19%; }
+.seat[data-id="31"] { top: 88%; left: 26%; }
+.seat[data-id="32"] { top: 47%; left: 35%; }
+.seat[data-id="33"] { top: 51%; left: 35%; }
+.seat[data-id="34"] { top: 47%; left: 46%; }
+.seat[data-id="35"] { top: 51%; left: 46%; }
+.seat[data-id="36"] { top: 47%; left: 55%; }
+.seat[data-id="37"] { top: 51%; left: 55%; }
+.seat[data-id="38"] { top: 59%; left: 38%; }
+.seat[data-id="39"] { top: 59%; left: 45%; }
+.seat[data-id="40"] { top: 59%; left: 52%; }
+.seat[data-id="41"] { top: 59%; left: 59%; }
+.seat[data-id="42"] { top: 64%; left: 38%; }
+.seat[data-id="43"] { top: 64%; left: 45%; }
+.seat[data-id="44"] { top: 64%; left: 52%; }
+.seat[data-id="45"] { top: 64%; left: 59%; }
+.seat[data-id="46"] { top: 84%; left: 37%; }
+.seat[data-id="47"] { top: 78%; left: 41%; }
+.seat[data-id="48"] { top: 76%; left: 46%; }
+.seat[data-id="49"] { top: 76%; left: 54%; }
+.seat[data-id="50"] { top: 78%; left: 59%; }
+.seat[data-id="51"] { top: 84%; left: 63%; }
+.seat[data-id="52"] { top: 84%; left: 56%; }
+.seat[data-id="53"] { top: 81%; left: 51%; }
+.seat[data-id="54"] { top: 84%; left: 46%; }
+.seat[data-id="55"] { top: 92%; left: 37%; }
+.seat[data-id="56"] { top: 92%; left: 43%; }
+.seat[data-id="57"] { top: 92%; left: 49%; }
+.seat[data-id="58"] { top: 92%; left: 55%; }
+.seat[data-id="59"] { top: 92%; left: 61%; }
+.seat[data-id="60"] { top: 89%; left: 71%; }
+.seat[data-id="61"] { top: 85%; left: 71%; }
+.seat[data-id="62"] { top: 81%; left: 71%; }
+.seat[data-id="63"] { top: 77%; left: 71%; }
+.seat[data-id="64"] { top: 73%; left: 71%; }
+.seat[data-id="65"] { top: 51%; left: 66%; }
+.seat[data-id="66"] { top: 47%; left: 66%; }
+.seat[data-id="67"] { top: 13%; left: 59%; }
+.seat[data-id="68"] { top: 19%; left: 59%; }
+.seat[data-id="69"] { top: 25%; left: 59%; }
+.seat[data-id="70"] { top: 14%; left: 50%; }
+.seat[data-id="71"] { top: 18%; left: 50%; }
+.seat[data-id="72"] { top: 22%; left: 50%; }
+.seat[data-id="73"] { top: 14%; left: 42%; }
+.seat[data-id="74"] { top: 18%; left: 42%; }
+.seat[data-id="75"] { top: 22%; left: 42%; }
+.seat[data-id="76"] { top: 16%; left: 32%; }
+.seat[data-id="77"] { top: 19%; left: 32%; }
+.seat[data-id="78"] { top: 23%; left: 32%; }
+.seat[data-id="79"] { top: 26%; left: 32%; }
+.seat[data-id="80"] { top: 11%; left: 22%; }
+.seat[data-id="81"] { top: 11%; left: 17%; }
+.seat[data-id="82"] { top: 11%; left: 11%; }
+.seat[data-id="83"] { top: 11%; left: 6%; }
+
+/* 🚪 회의실/고정 공간 텍스트 박스 스타일 */
+.room {
+  position: absolute;
+  padding: 6px 12px;
+  background-color: #f1f5f9;      
+  border: 1px dashed #94a3b8;     
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #64748b;                 
+  text-align: center;
+  pointer-events: none;           
+  z-index: 5;
+}
+
+.room[data-room="meeting-1"] { top: 23%; left: 3%; width: 83px; }
+.room[data-room="meeting-2"] { top: 23%; left: 17%; width: 60px; }
+.room[data-room="meeting-3"] { top: 34%; left: 5%; width: 100px; }
+.room[data-room="meeting-4"] { top: 34%; left: 34%; width: 90px; }
+.room[data-room="meeting-5"] { top: 33%; left: 51%; width: 74px; }
+.room[data-room="meeting-6"] { top: 17%; left: 77%; width: 90px; }
+.room[data-room="meeting-7"] { top: 30%; left: 77%; width: 90px; }
+.room[data-room="meeting-8"] { top:46%; left: 85%; width: 90px; }
+.room[data-room="meeting-9"] { top: 66%; left: 85%; width: 90px; }
+.room[data-room="meeting-10"] { top: 88%; left: 85%; width: 90px; }
