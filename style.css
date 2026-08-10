@@ -86,9 +86,10 @@ h1 {
 /* 🗺️ 지도 컨테이너 */
 .map-container {
   position: relative;
-  width: 700px;  
-  height: 904px; 
-  background-image: url('office_map.jpg'); 
+  width: min(700px, 100%);
+  aspect-ratio: 700 / 904;
+  height: auto;
+  background-image: url('office_map.jpg');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -245,3 +246,81 @@ h1 {
 .room[data-room="meeting-8"] { top:46%; left: 85%; width: 90px; }
 .room[data-room="meeting-9"] { top: 66%; left: 85%; width: 90px; }
 .room[data-room="meeting-10"] { top: 88%; left: 85%; width: 90px; }
+
+/* 휴대폰 화면용 */
+@media (max-width: 720px) {
+  body {
+    align-items: flex-start;
+    padding: 12px;
+  }
+
+  .container {
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .subtitle-last {
+    font-size: 16px;
+    margin-bottom: 18px;
+  }
+
+  .search-bar-container {
+    width: 100%;
+  }
+
+  #searchInput {
+    width: calc(100% - 64px);
+  }
+
+  #searchBtn {
+    padding: 10px 14px;
+  }
+
+  /* 지도와 같은 비율로 좌석도 축소 */
+  .seat {
+    width: 5.714%;
+    height: 2.212%;
+    font-size: 8px;
+    border-width: 1px;
+    border-radius: 3px;
+  }
+
+  /* 회의실 표시도 지도 너비에 비례하여 축소 */
+  .room {
+    padding: 0.85vw 1.7vw;
+    font-size: 1.85vw;
+    border-radius: 3px;
+  }
+
+  .room[data-room="meeting-1"] { width: 11.857%; }
+  .room[data-room="meeting-2"] { width: 8.571%; }
+  .room[data-room="meeting-3"] { width: 14.286%; }
+  .room[data-room="meeting-4"] { width: 12.857%; }
+  .room[data-room="meeting-5"] { width: 10.571%; }
+  .room[data-room="meeting-6"] { width: 12.857%; }
+  .room[data-room="meeting-7"] { width: 12.857%; }
+  .room[data-room="meeting-8"] { width: 12.857%; }
+  .room[data-room="meeting-9"] { width: 12.857%; }
+  .room[data-room="meeting-10"] { width: 12.857%; }
+}
+
+.credit {
+  margin-top: 8px;
+  color: #94a3b8;
+  font-size: 12px;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 720px) {
+  .credit {
+    font-size: 10px;
+  }
+}
