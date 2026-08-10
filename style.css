@@ -8,14 +8,14 @@
 
 body {
   background-color: #f5f7fb;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
   padding: 20px;
 }
 
 .container {
+  /* flex의 자동 너비 계산에 지도(700px)가 끌려가지 않도록 화면 폭을 기준으로 제한 */
+  width: min(700px, 100%);
+  margin: 0 auto;
   text-align: center;
 }
 
@@ -86,7 +86,8 @@ h1 {
 /* 🗺️ 지도 컨테이너 */
 .map-container {
   position: relative;
-  width: min(700px, 100%);
+  width: 100%;
+  max-width: 700px;
   aspect-ratio: 700 / 904;
   height: auto;
   background-image: url('office_map.jpg');
@@ -250,7 +251,6 @@ h1 {
 /* 휴대폰 화면용 */
 @media (max-width: 720px) {
   body {
-    align-items: flex-start;
     padding: 12px;
   }
 
