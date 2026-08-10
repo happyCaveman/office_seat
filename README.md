@@ -1,9 +1,8 @@
 # Office Seat
 
 팀원이 오늘 앉은 좌석을 등록하고 빠르게 찾을 수 있는 자율좌석제 좌석 배치 웹사이트입니다.
-웹사이트는 [office-seat.com](https://www.office-seat.com/)에서 확인할 수 있습니다.
 
-![Office Seat 웹사이트 화면](./office_seat_project.png)
+[👉 웹사이트 바로가기](https://www.office-seat.com/)
 
 ## 주요 기능
 
