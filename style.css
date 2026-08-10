@@ -1,4 +1,4 @@
-/* 기본 스타일 초기화 */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -41,7 +41,7 @@ h1 {
 .search-bar-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 16px; /* 검색창과 지도 사이의 간격 */
+  margin-bottom: 16px; 
   gap: 8px;
 }
 #searchInput {

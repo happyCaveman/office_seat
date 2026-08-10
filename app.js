@@ -25,7 +25,7 @@ async function renderSeats() {
     const seatBtn = document.createElement('button');
     seatBtn.classList.add('seat');
     seatBtn.setAttribute('data-id', i);
-    seatBtn.innerHTML = `<span class="seat-num">${i}</span><span class="user-name">빈 좌석</span>`;
+    seatBtn.innerHTML = `<span class="seat-num">${i}</span><span class="user-name">좌석</span>`;
     
     seatBtn.addEventListener('click', () => handleSeatClick(i));
     
@@ -56,7 +56,7 @@ async function fetchSeatData() {
       nameElement.innerText = seat.user_name;
     } else {
       seatElement.classList.remove('occupied');
-      nameElement.innerText = '빈 좌석';
+      nameElement.innerText = '좌석';
     }
   });
 }
